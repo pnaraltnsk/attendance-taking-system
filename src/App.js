@@ -7,7 +7,7 @@ const getFromFirebase = firebase.firestore().collection("studentFaceDesc");
 function App() {
   const [inCall, setInCall] = useState(false);
   const [name, setName] = useState("");
-  localStorage.clear();
+  //localStorage.clear();
   const [names, setNames] = useState(JSON.parse(localStorage.getItem('nameList')) ?? []);
   const [students, setStudents] = useState([]);
   
@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     getDetections();
     //console.log("student",students);
-    //localStorage.setItem("nameList", JSON.stringify(names));
+    localStorage.setItem("nameList", JSON.stringify(names));
     console.log("UPDATED",names);
   } , [names]);
 
@@ -42,7 +42,6 @@ function App() {
     setNames(arr);
     console.log("arr:", arr);
     console.log("Updated:",names);
-    console.log("student11",students);
     
   };
 

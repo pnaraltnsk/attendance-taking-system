@@ -1,5 +1,5 @@
 {
-  "name": "group-video-calling-app",
+  "name": "attendanceSystem",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

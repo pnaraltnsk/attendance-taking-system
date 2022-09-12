@@ -9,7 +9,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { euclideanDistance } from 'face-api.js'
 import * as faceapi from 'face-api.js';
 import {getFromFirebase} from "./App.js";
-import imgg from "./images/rihanna.jpg";
+//import imgg from "./images/rihanna.jpg";
 export default function Controls(props) {
   const client = useClient();
   const names = props.names;
@@ -65,6 +65,7 @@ export default function Controls(props) {
     setInCall(false);
 
     const index = names.indexOf(name);
+    console.log("index:", index);
     if (index > -1) { 
       names.splice(index, 1);
     }
@@ -121,32 +122,32 @@ export default function Controls(props) {
         snapshot.forEach(doc => {
           const dd = Object.values(doc.data().descriptor);
           console.log("id", dd);
-         // const id = doc.id;
+          const id = doc.id;
           const distance = euclideanDistance(dd, descriptor);
           console.log("DISTANCE:",distance);
 
           
           var session = doc.data().sessions;
           
-          //const usersSubCollectionGeneralRef = getFromFirebase.doc(doc.id).collection('attendanceRecords');
+          const usersSubCollectionGeneralRef = getFromFirebase.doc(doc.id).collection('attendanceRecords');
           if(distance<0.5){        
-            /*usersSubCollectionGeneralRef.doc("session"+session).set({
+            usersSubCollectionGeneralRef.doc("session"+session).set({
               date:date, 
               presence:true
-            });*/                       
+            });                      
             console.log("matched",doc.data().presence);
           }
           else{
-            /*usersSubCollectionGeneralRef.doc("session"+session).set({
+            usersSubCollectionGeneralRef.doc("session"+session).set({
               date:date, 
               presence:false
-            });*/  
+            }); 
             console.log("not matched",doc.data().presence);
           }  
           
-          /*doc.ref.update({
+          doc.ref.update({
             sessions: session + 1
-          });*/
+          });
       });
       } 
   }
@@ -157,8 +158,8 @@ export default function Controls(props) {
     console.log("UPDATED 2",names);
     var video = document.getElementsByTagName('video')
     const date = new Date().toDateString();
-    //await studentNamesinDb();
-    //await notAttending(names, studentDb, date);
+    await studentNamesinDb();
+    await notAttending(names, studentDb, date);
     for( var i = 0; i < video.length; i++ ){
       
       console.log("video", video.length);
@@ -185,9 +186,9 @@ export default function Controls(props) {
       const descriptor = detections[0].descriptor;
 
       
-      console.log("detections", descriptor);
-      //const cname = names[i];
-
+      //console.log("detections", descriptor);
+      const cname = names[i];
+      console.log("cname------",i, cname);
 
       
       
@@ -197,7 +198,7 @@ export default function Controls(props) {
         sessions: 0
       });*/ 
       
-      attending(descriptor, name, date);
+      attending(descriptor, cname, date);
     
       //images.push(detections);
       //faceapi.draw.drawDetections(canvas, detections);
@@ -209,10 +210,10 @@ export default function Controls(props) {
 
     }
   };
-
+//<img src={imgg} id="imgg" hidden />
   return (
     <Grid container spacing={2} alignItems="center">
-      <img src={imgg} id="imgg" hidden />
+      
       <Grid item>
         <Button
           variant="contained"
